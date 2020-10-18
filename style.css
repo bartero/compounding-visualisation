@@ -28,14 +28,14 @@ body {
       width: 100%; }
       #game-div #main #game-controls input {
         width: 100%; }
-    #game-div #main #game-main {
+    #game-div #main #game-canvas {
       position: absolute;
       top: 0;
       left: 0;
       z-index: 1;
       width: 100%;
       height: 100%; }
-      #game-div #main #game-main canvas {
+      #game-div #main #game-canvas canvas {
         width: 100%; }
 
 input[type="range"]::-moz-range-thumb {

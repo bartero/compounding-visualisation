@@ -1,5 +1,5 @@
 const { offsetWidth: width, offsetHeight: height } = document.getElementById(
-  "game-main"
+  "game-canvas"
 );
 console.log(width, height)
 
@@ -23,7 +23,7 @@ function setup() {
   noLoop();
   angleMode(RADIANS);
 
-  createCanvas(width + 2, height + 2).parent("game-main");
+  createCanvas(width + 2, height + 2).parent("game-canvas");
   slider = createSlider(1, yearsToCompute, 0, 0)
     .parent("game-controls")
     // .size(width - 30)
