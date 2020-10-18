@@ -1,0 +1,14 @@
+{
+  "name": "visualization-fo-the-compounding-concept",
+  "version": "0.1",
+  "author": {
+    "email": "bartek.krzywania@gmail.com",
+    "name": "Bartłomiej Krzywania",
+    "url": "https://github.com/bartero/compounding-visualization"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "latest",
+    "node-sass": "^4.14.1"
+  }
+}

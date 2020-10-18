@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo running a dev server...
+yarn http-server site &>tmp &
+sleep 0.5
+# echo "###"
+cat tmp
+# echo "###"
+
+echo running live build of scss...
+yarn node-sass --watch site/style.scss --output site
