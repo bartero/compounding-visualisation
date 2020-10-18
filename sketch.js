@@ -20,7 +20,7 @@ let slider;
 let growthRateInput;
 
 function setup() {
-  noLoop();
+  // noLoop();
   angleMode(RADIANS);
 
   createCanvas(width + 2, height + 2).parent("game-canvas");
@@ -29,9 +29,9 @@ function setup() {
     // .size(width - 30)
     // .style("margin-top", `${controlsMargin}px`)
     // .style("margin-left", `${controlsMargin}px`)
-    .input(() => {
-      redraw();
-    });
+    // .input(() => {
+    //   redraw();
+    // });
   // console.log(slider);
 
   // input = createInput('Enter the growth rate')
