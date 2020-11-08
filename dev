@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-echo running live build of scss...
-yarn node-sass --watch style.scss --output . &
-
-echo running a dev server...
-yarn http-server . &>tmp &
-sleep 1
-cat tmp
+if [[ "$1" == "run-server" ]]; then
+  echo running a dev server...
+  yarn http-server .
+elif [[ "$1" == "watch-scss" ]]; then
+  echo running live build of scss...
+  yarn node-sass --watch style.scss --output .
+else
+  echo choose a command: run-server or watch-scss
+fi

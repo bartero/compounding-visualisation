@@ -1,93 +1,89 @@
-const { offsetWidth: width, offsetHeight: height } = document.getElementById(
-  "game-canvas"
-);
-console.log(width, height)
-
-// const width = window.innerWidth;
-// const height = window.innerHeight;
-const growthRate = 2;
-const yearsToCompute = 10;
-const unitSquareWidth =
-  Math.min(width, height) / Math.pow(growthRate, yearsToCompute / 2);
-
 const backgroundColor = "#F2F7F2";
 const strokeColor = "#232623";
 const fillColor = "#AAD3BF";
-
 const controlsMargin = 20;
+const growthRate = 2;
+const yearsToCompute = 10;
 
+let width, height;
 let slider;
 let growthRateInput;
+let unitSquareWidth;
+
+function canvasSizeChanged() {
+  unitSquareWidth =
+    Math.min(width, height) / Math.pow(growthRate, yearsToCompute / 2);
+}
+
+function windowSizeChanged() {
+  ({ offsetWidth: width, offsetHeight: height } = document.getElementById(
+    "game-canvas"
+  ));
+  canvasSizeChanged();
+}
+
+function windowResized() {
+  windowSizeChanged();
+  resizeCanvas(width + 2, height + 2);
+}
 
 function setup() {
-  // noLoop();
+  noLoop()
   angleMode(RADIANS);
+  windowSizeChanged();
 
   createCanvas(width + 2, height + 2).parent("game-canvas");
   slider = createSlider(1, yearsToCompute, 0, 0)
     .parent("game-controls")
-    // .size(width - 30)
-    // .style("margin-top", `${controlsMargin}px`)
-    // .style("margin-left", `${controlsMargin}px`)
-    // .input(() => {
-    //   redraw();
-    // });
-  // console.log(slider);
-
-  // input = createInput('Enter the growth rate')
+    .input(() => {
+      redraw();
+    });
 
   let canvas = document.getElementsByTagName("canvas")[0];
   window.canvas = canvas;
 }
 
-// function getInputValues() {
-//   const inputValues = {};
+let lastDrawTime = null;
+let lastSecondTime = null;
+let redrawsSinceLastSecond;
 
-//   const inputElements = document
-//     .getElementById("game-div")
-//     .getElementsByTagName("input");
+function shouldDraw(time) {
+  if (!lastDrawTime) {
+    return true;
+  }
 
-//   for (const { name, value } of inputElements) {
-//     inputValues[name] = value;
-//   }
+  if (time - lastDrawTime > 16) {
+    return true;
+  }
 
-//   return inputValues;
-// }
+  return false;
+}
 
 function draw() {
+  const nowTime = Date.now();
+
+  if (!shouldDraw(nowTime)) {
+    return;
+  }
+
+  lastDrawTime = nowTime;
+  if (!lastSecondTime) {
+    lastSecondTime = Date.now();
+    redrawsSinceLastSecond = 1;
+  } else {
+    redrawsSinceLastSecond += 1;
+    if (nowTime - lastSecondTime >= 1000) {
+      console.log(`redraws in the last second: ${redrawsSinceLastSecond}`);
+
+      lastSecondTime = null;
+    }
+  }
+
   background(backgroundColor);
-  strokeWeight(1);
 
   const rotation = slider.value();
   drawRectangles(rotation);
-  // drawArrow();
-  // drawCaptions();
-}
-
-function drawArrow() {
-  push();
-
-  console.log(slider.height);
-  console.log(slider);
-
-  fill(strokeColor);
-  textFont("Ubuntu Mono");
-  textStyle(BOLD);
-  textSize(14);
-  const x = slider.width / (yearsToCompute - 1);
-  line(
-    controlsMargin + x,
-    controlsMargin - 0.1 * slider.height,
-    controlsMargin + x,
-    controlsMargin + 5.2 * slider.height
-  );
-  text(
-    "1 year",
-    controlsMargin + x - 10,
-    controlsMargin + 1.2 * slider.height + 14
-  );
-
-  pop();
+  drawCaptions();
 }
 
 function drawCaptions() {
@@ -95,9 +91,11 @@ function drawCaptions() {
   textSize(20);
   fill(strokeColor);
 
-  text(`The growth rate: ${growthRate}`, 20, 20);
-  const yearsElapsed = Math.floor(slider.value() - 1);
-  text(`Full years elapsed: ${yearsElapsed}`, 20, 45);
+  text(`The growth rate: ${growthRate}`, 20, 70);
+  const periodElapsed = Math.floor((slider.value() - 1) * 10) / 10;
+
+  // const yearsElapsed = Math.floor();
+  text(`Years elapsed: ${periodElapsed}`, 20, 100);
 }
 
 function drawRectangles(factor) {
